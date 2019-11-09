@@ -3,7 +3,6 @@
 
 // init project
 var express = require('express');
-var bodyParser = require('body-parser');
 var app = express();
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
@@ -13,8 +12,6 @@ app.use(cors({optionSuccessStatus: 200}));  // some legacy browsers choke on 204
 
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
-
-app.use(bodyParser.urlencoded({extended: false}));
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (req, res) {
@@ -28,7 +25,13 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get("/api/whoami", function (req, res) {
-  console.log(req.params);
+  var whoami = {
+    ipaddress: req.headers["x-forwarded-for"],
+    language: req.headers["accept-language"],
+  }
+  console.log(req.headers["user-agent"]);
+  console.log();
+  console.log();
 });
 
 // listen for requests :)
